@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signin-server
+  labels:
+    app: signin-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: signin-server
+  template:
+    metadata:
+      labels:
+        app: signin-server
+    spec:
+      containers:
+      - name: signin-server
+        image: ashwinc44/signin:v1.4
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: signin-service
+  labels:
+     app: signin-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: signin-server
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: signin-hpa
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: signin-server
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50

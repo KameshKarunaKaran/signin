@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: signin-server
-        image: ashwinc44/signin:v1.4
+        image: kamesh9810/signin:v1.4
         ports:
         - containerPort: 8080
 ---

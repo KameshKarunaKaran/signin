@@ -1,3 +1,3 @@
 FROM tomcat
-COPY *.war webapps/
+COPY target/*.war webapps/
 EXPOSE 8080
